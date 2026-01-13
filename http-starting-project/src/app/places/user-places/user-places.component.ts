@@ -21,6 +21,7 @@ export class UserPlacesComponent implements OnInit{
   isLoading = signal(false);
   private http = inject(HttpClient);
   placesService: any;
+  destroyRef: any;
 
   ngOnInit(): void {
     this.isLoading.set(true);
@@ -49,5 +50,9 @@ export class UserPlacesComponent implements OnInit{
 
   onRemovePlace(place: Place){
     const subscription = this.placesService.removeUserPlace(place).subscribe();
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    });
   }
 }
